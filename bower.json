@@ -1,0 +1,22 @@
+{
+  "name": "basic-player",
+  "version": "0.0.1",
+  "authors": [
+    "Igor Akulov <egor@akulovs.com>"
+  ],
+  "description": "basic rationale player example",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "./components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "asteroid": "~0.6.1"
+  }
+}
