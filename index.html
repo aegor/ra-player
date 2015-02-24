@@ -14,42 +14,57 @@
     -->
 
     <style>
-    body {
-        font-family: sans-serif;
-        margin: 0;
-        overflow: hidden;
-    }
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
     </style>
 </head>
 
 <body>
 <script>
-/* Наша основная функция, которая начнёт работать после соединения с бэкендом */
-function player (result) {
-//console.log("PLAYER", result);
-/*
- * НАЧАЛО НАШЕГО КОДА
- */
-    var pl = players.reactiveQuery({name: "pl1"});
-    console.log(pl.result[0]);
-    pl.on("change", function(objId) {
-            console.log("pl changed, objId:", objId, "pl result:", pl.result[0]);
-    }
-    );
-/*
- * КОНЕЦ НАШЕГО КОДА
- */
-    return result.result
-};
+    /* Наша основная функция, которая начнёт работать после соединения с бэкендом */
+    function app(result) {
+        /*
+         * НАЧАЛО НАШЕГО КОДА
+         */
+        var pl = player.reactiveQuery({});
+        console.log("Player content: ", pl.result[0]);
+        pl.on("change", function (objId) {
+                    console.log("player config changed: ", pl.result[0]);
+                    console.log("Reload page...");
+                    location.reload();
+                }
+        );
 
-// Перечисляем имена коллекций, на которые подписываемся
-// В функции колбэка (в данном примере, player),
-// автоматически создадутся глобальные объекты с этими именами, содержащие коллекции,
-// например, в данном случае, window.players и window.designs
-//  
-var collections = ["players", "designs"] 
-// Соединяемся с бекендом Rationale и подписываемся на коллекции
-raConnect("localhost:3000", collections, player);
+        var de = design.reactiveQuery({});
+        console.log("Design content: ", de.result[0]);
+        de.on("change", function (objId) {
+                    console.log("design changed: ", de.result[0]);
+                    console.log("Reload page...");
+                    location.reload();
+                }
+        );
+
+        /*
+         * КОНЕЦ НАШЕГО КОДА
+         */
+        return result.result // Because struct of result is:
+                             // {result: result, params: {connection: conn, collections: subs}}
+                             // See rationale.js for details.
+    }
+    ;
+
+    // Перечисляем имена коллекций, на которые подписываемся в функции колбэка (в данном примере, "app"),
+    // автоматически создадутся глобальные объекты с этими именами, содержащие коллекции,
+    // например, в данном случае, window.player и window.design, соответствующие соответственно
+    // конфигурации и дизайну нашего плеера, вычисленные по его ip-адресу.
+    //
+
+    var collections = ["player", "design"];
+    // Соединяемся с бэкендом Rationale и подписываемся на коллекции
+    raConnect("localhost:3000", collections, app);
 </script>
 </body>
 </html>
