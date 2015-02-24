@@ -12,7 +12,6 @@ function raConnect(server, subs, func){
     }
     function params(result){
         for (i in subs){
-            //window[subs[i]] = conn.getCollection(subs[i])
             window[subs[i]] = conn.getCollection(Object.keys(conn.collections)[i]);
         }
         return {result: result, params: {connection: conn, collections: subs}}
